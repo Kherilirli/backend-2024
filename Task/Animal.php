@@ -3,12 +3,12 @@ class Animal {
     // Property animals
     public $animals = [];
 
-    // Constructor untuk mengisi data awal (array)
+    // Constructor untuk mengisi data awal 
     public function __construct($data) {
         $this->animals = $data;
     }
 
-    // Method index untuk menampilkan seluruh data animals menggunakan foreach
+    // Method index untuk menampilkan seluruh data animals 
     public function index() {
         echo "Daftar hewan:<br>";
         foreach ($this->animals as $key => $animal) {
@@ -17,13 +17,13 @@ class Animal {
         echo "<br>"; // Menambahkan baris baru setelah daftar hewan
     } 
 
-    // Method store untuk menambahkan hewan baru menggunakan array_push
+    // Method store untuk menambahkan hewan baru menggunakan 
     public function store($data) {
         array_push($this->animals, $data);
         echo "Hewan '$data' berhasil ditambahkan.<br><br>";
     }
 
-    // Method update untuk memperbarui data hewan
+    // Method update untuk mengupdate hewan
     public function update($index, $data) {
         if (isset($this->animals[$index])) {
             echo "Hewan '" . $this->animals[$index] . "' diubah menjadi '$data'.<br><br>";
@@ -33,7 +33,7 @@ class Animal {
         }
     }
 
-    // Method destroy untuk menghapus hewan menggunakan array_splice atau unset
+    // Method destroy untuk menghapus hewan
     public function destroy($index) {
         if (isset($this->animals[$index])) {
             echo "Hewan '" . $this->animals[$index] . "' berhasil dihapus.<br><br>";
@@ -44,7 +44,7 @@ class Animal {
     }
 }
 
-// Contoh penggunaan class Animal
+// membuat object
 $animalList = new Animal(['Kucing', 'Anjing', 'Buaya']);
 
 // Menampilkan daftar hewan awal
@@ -55,10 +55,10 @@ $animalList->store('Burung');
 $animalList->index();
 
 // Memperbarui data hewan pada index 1
-$animalList->update(1, 'Onta');
+$animalList->update(0, 'Kucing Anggora');
 $animalList->index();
 
 // Menghapus hewan pada index 0
-$animalList->destroy(0);
+$animalList->destroy(1);
 $animalList->index();
 ?>
