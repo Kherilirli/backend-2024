@@ -32,8 +32,8 @@ class StudentController extends Controller
     public function store(Request $request){
         $request->validate([
             'nama' => 'required|string|max:255',
-            'nim' => 'required|string|max:255|unique:students,',
-            'email' => 'required|email|unique:students,',
+            'nim' => 'required|string|max:255',
+            'email' => 'required|email|max:255',
             'jurusan' => 'required|string|max:255',
         ]);
 
@@ -48,7 +48,7 @@ class StudentController extends Controller
 
         $data = [
             'message' => 'Student is created succesfully',
-            'data' => [$student],
+            'data' => $student,
         ];
 
         return response()->json($data, 200);
