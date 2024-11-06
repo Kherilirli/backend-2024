@@ -29,7 +29,9 @@ class StudentController extends Controller
         }
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+{
+    try {
         $request->validate([
             'nama' => 'required|string|max:255',
             'nim' => 'required|string|max:255',
@@ -47,12 +49,20 @@ class StudentController extends Controller
         $student = Student::create($input);
 
         $data = [
-            'message' => 'Student is created succesfully',
+            'message' => 'Student is created successfully',
             'data' => $student,
         ];
 
         return response()->json($data, 200);
+    } catch (\Illuminate\Validation\ValidationException $e) {
+        $errors = $e->validator->errors();
+        return response()->json([
+            'message' => 'Validation failed',
+            'errors' => $errors
+        ], 422);
     }
+}
+
 
     public function update(Request $request, $id){
         $student = Student::find($id);
