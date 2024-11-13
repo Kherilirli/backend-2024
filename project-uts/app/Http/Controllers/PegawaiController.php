@@ -152,7 +152,7 @@ class PegawaiController extends Controller
 
         if ($resources->isEmpty()) {
             $data = [
-                'message' => 'Resource not found'
+
             ];
             return response()->json($data, 404);
         } else {
