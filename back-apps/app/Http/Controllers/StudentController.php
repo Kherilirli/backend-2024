@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Student;
+use Illuminate\Support\Facades\Validator;
 use Pest\Mutate\Mutators\Sets\ReturnSet;
 use Symfony\Contracts\Service\Attribute\Required;
 
@@ -30,38 +31,31 @@ class StudentController extends Controller
     }
 
     public function store(Request $request)
-{
-    try {
-        $request->validate([
-            'nama' => 'required|string|max:255',
-            'nim' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'jurusan' => 'required|string|max:255',
+    {
+        $validator = Validator::make($request->all(), [
+            'nama' => 'required',
+            'nim' => 'numeric|required',
+            'email' => 'email|required',
+            'jurusan' => 'required',
         ]);
 
-        $input = [
-            'nama' => $request->nama,
-            'nim' => $request->nim,
-            'email' => $request->email,
-            'jurusan' => $request->jurusan
-        ];
+        if ($validator->fails()) {
+            return response()->json([
+                'message' => 'Validation errors',
+                'errors' => $validator->errors()
+            ], 422);
+        }
 
-        $student = Student::create($input);
+        $student = Student::create($request->all());
 
         $data = [
             'message' => 'Student is created successfully',
             'data' => $student,
         ];
 
-        return response()->json($data, 200);
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        $errors = $e->validator->errors();
-        return response()->json([
-            'message' => 'Validation failed',
-            'errors' => $errors
-        ], 422);
+        return response()->json($data, 201);
     }
-}
+
 
 
     public function update(Request $request, $id){
