@@ -4,12 +4,15 @@ const main = () => {
     console.log('Method index - Menampilkan buah');
     console.log(index());
 
-    console.log('\nMethod store - Menambahkan buah Pisang');
-    store('Pisang');
+    const newFruit = 'Pisang';
+    console.log(`\nMethod store - Menambahkan buah ${newFruit}`);
+    store(newFruit);
     console.log(index());
 
-    console.log('\nMethod update - Update data 0 menjadi Kelapa');
-    update(0, 'Kelapa');
+    const updateIndex = 0;
+    const updatedFruit = 'Kelapa';
+    console.log(`\nMethod update - Update data ${updateIndex} menjadi ${updatedFruit}`);
+    update(updateIndex, updatedFruit);
     console.log(index());
 
     console.log('\nMethod destroy - Menghapus data 0');
