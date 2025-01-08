@@ -4,52 +4,113 @@ const Student = require("../models/Student");
 
 class StudentController{
     static async index(req, res) {
-        try {
-            const students = await Student.all();
-            res.json({
-                message: "Mengambil data students",
-                data: students,
-            });
-        } catch (error) {
-            res.status(500).json({
-                message: "Gagal mengambil data students",
-                error: error.message,
-            });
+        const students = await Student.all();
+
+        if (students.length > 0) {
+            const data = {
+                message : "Menampilkan semua students",
+                data : students
+            };
+            res.status(200).json(data);
+        } else {
+            const data = {
+                message : "Student is empty"
+            };
+            res.status(200).json(data);
         }
     }
 
     static async store(req, res){        
-        try {
-            const { nama, nim, email, jurusan} = req.body;
+        
+        const { nama, nim, email, jurusan} = req.body;
 
-            if (!nama || !nim || !email || !jurusan) {
-                return res.status(400).json({
-                    message: "Semua input harus diisi! Pastikan mengisi nama, nim, email, dan jurusan.",
-                });
-            }
+        if (!nama || !nim || !email || !jurusan) {
+            const data = {
+                message: "Semua data harus dikirim",
+            };
+            return res.status(400).json(data);
+        }
 
-            const newStudent = await Student.create({
-                nama,
-                nim,
-                email,
-                jurusan,
-                created_at : new Date(),
-                updated_at : new Date()
-            });
+        const newStudent = await Student.create({
+            nama,
+            nim,
+            email,
+            jurusan,
+            created_at : new Date(),
+            updated_at : new Date()
+        });
 
-            res.json({
+        if (newStudent){
+            const data = {
                 message : "Menambahkan data student",
                 data : newStudent
-            })
-        } catch(err) {
-            res.status(500).json({
+            };
+            res.status(201).json(data);
+        } else {
+            const data = {
                 message : "Gagal menambahkan data student",
-                error : err.message 
-            });
+            };
+            res.status(400).json(data);
         }
     }
 
+    static async update(req, res) {
+        const {id} = req.params;
+        const student = await Student.find(id);
+
+        if (student) {
+            const student = await Student.update(id, req.body);
+            const data = {
+                message : "Mengedit data students",
+                data : student
+            };
+            res.status(200).json(data);
+        } else {
+            const data = {
+                message : "Student not found"
+            };
+            res.status(404).json(data);
+        }
+    }
+
+    static async delete(req, res) {
+        const {id} = req.params;
+        const student = await Student.find(id);
+
+        if (student) {
+            await Student.delete(id);
+            const data = {
+                message : `Menghapus data student ${student.nama}` 
+            };
+            res.status(200).json(data);
+        } else {
+            const data = {
+                message : "Student not found"
+            };
+            res.status(404).json(data);
+        }
+    }
+
+    static async show(req, res) {
+        const {id} = req.params;
+        const student = await Student.find(id);
+
+        if (student) {
+            const data = {
+                message : "Menampilkan data students",
+                data : student
+            };
+            res.status(200).json(data);
+        } else {
+            const data = {
+                message : "Student not found"
+            };
+            res.status(404).json(data);
+        }
+    }
 }
+
+
 
 
 
